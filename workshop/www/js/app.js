@@ -5,13 +5,11 @@
     var service = new EmployeeService();
     service.initialize().done(function () {
         console.log("Service initialized");
+        var service = new EmployeeService();
+        renderHomeView();
     });
 
     /* --------------------------------- Event Registration -------------------------------- */
-    $('.search-key').on('keyup', findByName);
-    $('.help-btn').on('click', function() {
-        alert("Employee Directory v3.4");
-    });
     document.addEventListener('deviceready', function () {
         FastClick.attach(document.body);
         if (navigator.notification) { // Override default HTML alert with native dialog
@@ -21,7 +19,7 @@
                     null,       // callback
                     "Workshop", // title
                     'OK'        // buttonName
-                );
+                    );
             };
         }
     }, false);
@@ -37,6 +35,15 @@
                 $('.employee-list').append('<li><a href="#employees/' + e.id + '">' + e.firstName + ' ' + e.lastName + '</a></li>');
             }
         });
+    }
+
+    function renderHomeView() {
+        var html =
+        "<h1>Directory</h1>" +
+        "<input class='search-key' type='search' placeholder='Enter name'/>" +
+        "<ul class='employee-list'></ul>";
+        $('body').html(html);
+        $('.search-key').on('keyup', findByName);
     }
 
 }());
