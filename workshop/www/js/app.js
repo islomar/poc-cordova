@@ -1,15 +1,14 @@
 // We use an "Immediate Function" to initialize the application to avoid leaving anything behind in the global scope
 (function () {
 
-    var homeTpl = Handlebars.compile($("#home-tpl").html());
-    var employeeListTpl = Handlebars.compile($("#employee-list-tpl").html());
-
     /* ---------------------------------- Local Variables ---------------------------------- */
+    HomeView.prototype.template = Handlebars.compile($("#home-tpl").html());
+    EmployeeListView.prototype.template = Handlebars.compile($("#employee-list-tpl").html());
+
     var service = new EmployeeService();
     service.initialize().done(function () {
         console.log("Service initialized");
-        var service = new EmployeeService();
-        renderHomeView();
+        $('body').html(new HomeView(service).render().$el);
     });
 
     /* --------------------------------- Event Registration -------------------------------- */
@@ -29,17 +28,5 @@
             };
         }
     }, false);
-
-    /* ---------------------------------- Local Functions ---------------------------------- */
-    function findByName() {
-        service.findByName($('.search-key').val()).done(function (employees) {
-            $('.content').html(employeeListTpl(employees));
-        });
-    }
-
-    function renderHomeView() {
-        $('body').html(homeTpl());
-        $('.search-key').on('keyup', findByName);
-    }
 
 }());
